@@ -4,13 +4,16 @@ class PropertiesController < ApplicationController
   # GET /properties
   def index
     @properties = Property.all
-    render json: @properties, only: [:name, :description, :image]
+    render json: @property.as_json(only: %i[name description name]).merge(
+      image_path: url_for(@property.image))
   end
 
   # GET /properties/1
   def show
     #if user.subscribed then
-      render json: @property, only: [:name, :description, :address, :image]
+      #render json: @property, only: [:name, :description, :address, :image]
+      render json: @property.as_json(only: %i[name description address contact name]).merge(
+        image_path: url_for(@property.image))
     #else
       #index
     #end
@@ -22,7 +25,9 @@ class PropertiesController < ApplicationController
     @property = Property.new(property_params)
 
     if @property.save
-      render json: @property, status: :created, location: @property, except: [:created_at, :updated_at]
+      render json: @property.as_json(only: %i[name description address contact name]).merge(
+        image_path: url_for(@property.image))
+      #render json: @property, status: :created, location: @property, except: [:created_at, :updated_at]
     else
       render json: @property.errors, status: :unprocessable_entity
     end
@@ -52,6 +57,6 @@ class PropertiesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def property_params
-      params.require(:property).permit(:name, :description, :address, :image)
+      params.require(:property).permit(:name, :description, :address, :contact, :image)
     end
 end
