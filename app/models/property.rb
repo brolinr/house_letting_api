@@ -1,11 +1,6 @@
 class Property < ApplicationRecord
     has_one_attached :image
 
-    validate :image_present?
+    validate_presence_of :name, :address, :description, :contact
 
-    private
-
-    def image_present?
-        errors.add(:image, :blank) unless image.attached?
-    end
 end
