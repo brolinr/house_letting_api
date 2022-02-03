@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_31_204142) do
+ActiveRecord::Schema.define(version: 2022_02_03_171706) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -40,6 +40,21 @@ ActiveRecord::Schema.define(version: 2022_01_31_204142) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "amounts", force: :cascade do |t|
+    t.decimal "price"
+    t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_amounts_on_user_id"
+  end
+
+  create_table "customers", force: :cascade do |t|
+    t.string "name"
+    t.string "phone"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "properties", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -47,16 +62,31 @@ ActiveRecord::Schema.define(version: 2022_01_31_204142) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "contact"
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_properties_on_user_id"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.integer "customer_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "poll_url"
+    t.string "month"
+    t.integer "ecocash_number"
+    t.index ["customer_id"], name: "index_subscriptions_on_customer_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "phone"
-    t.boolean "admin"
+    t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "amounts", "users"
+  add_foreign_key "properties", "users"
+  add_foreign_key "subscriptions", "customers"
 end

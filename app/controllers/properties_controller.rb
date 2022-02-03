@@ -9,9 +9,10 @@ class PropertiesController < ApplicationController
 
   # GET /properties/1
   def show
-    #if user.subscribed then
+    #if customer.subscribed then
       #render json: @property, only: [:name, :description, :address, :image]
       render json: @property, only: [:name, :description, :address, :contact]
+      
     #else
       #index
     #end
@@ -21,7 +22,7 @@ class PropertiesController < ApplicationController
   def create
     #authenticate user && confirm if the user is an admin
     @property = Property.new(property_params)
-
+    #@property = current_user.properties.build(property_params)
     if @property.save
       #render json: @property.as_json(only: %i[name description address contact name]).merge(
        # image_path: url_for(@property.image))
@@ -34,6 +35,7 @@ class PropertiesController < ApplicationController
   # PATCH/PUT /properties/1
   def update
     #authenticate user && confirm if the user is an admin
+    authenticate_user
     if @property.update(property_params)
       render json: @property, except: [:created_at, :updated_at]
     else
@@ -55,6 +57,6 @@ class PropertiesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def property_params
-      params.require(:property).permit(:name, :description, :address, :contact, :image)
+      params.require(:property).permit(:name, :description, :address, :contact, :user_id)
     end
 end

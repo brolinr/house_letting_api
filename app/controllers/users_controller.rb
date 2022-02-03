@@ -2,11 +2,15 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :destroy]
   before_action :admin_user, only: [:destroy]
   
+  include CurrentUserConcern
+
+
   # POST /users
   def create
     @user = User.new(user_params)
 
     if @user.save
+      log_in @user
       render json: @user, status: :created, location: @user
     else
       render json: @user.errors, status: :unprocessable_entity
@@ -27,7 +31,7 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:name, :phone, :admin)
+      params.require(:user).permit(:name, :phone, :password, :password_confirmation)
     end
 
     # Confirms an admin user.
