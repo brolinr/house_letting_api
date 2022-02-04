@@ -4,17 +4,16 @@ class PropertiesController < ApplicationController
   # GET /properties
   def index
     @properties = Property.all
-    render json: @properties
+    render json: @properties, only: [:name, :description]
   end
 
   # GET /properties/1
   def show
-    #if customer.subscribed then
+    #if customer has any subscriptions && if the customer's last subscription has not expired
       #render json: @property, only: [:name, :description, :address, :image]
       render json: @property, only: [:name, :description, :address, :contact]
-      
     #else
-      #index
+      #index the properties
     #end
   end
 

@@ -4,7 +4,7 @@ class SubscriptionsController < ApplicationController
   # GET /subscriptions
   def index
     @subscriptions = Subscription.all
-    @subscriptions = current_customer.subscriptions.all
+    #@subscriptions = current_customer.subscriptions.all
 
     render json: @subscriptions
   end
@@ -35,10 +35,10 @@ class SubscriptionsController < ApplicationController
                         "https://doucetech.herokuapp.com/")
 
     payment = paynow.create_payment("Company Subscription", 
-                                    @subscription.email)
-
-    payment.add("#{Date::MONTHNAMES[Time.now.mon]} Subscription", Amount.last)
-
+                                    "subscription@email.com")
+    amount = User.first.amounts.last
+    payment.add("#{Date::MONTHNAMES[Time.now.mon]} Subscription", amount.price)
+    
     response = paynow.send_mobile(payment, @subscription.ecocash_number.to_s, 'ecocash')
 
     if response.success
@@ -58,6 +58,6 @@ class SubscriptionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def subscription_params
-      params.require(:subscription).permit(:poll_url, :month, :ecocash_number)
+      params.require(:subscription).permit(:poll_url, :month, :ecocash_number, :customer_id, :email)
     end
 end
