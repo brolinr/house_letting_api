@@ -1,13 +1,16 @@
 class PropertiesController < ApplicationController
   before_action :set_property, only: [:show, :update, :destroy]
 
-  # GET /properties
+  # Listing all properties
   def index
     @properties = Property.all
-    render json: @properties, only: [:name, :description]
+
+    @properties.each |p| do
+      render json: p, only: [:name, :description]
+    end
   end
 
-  # GET /properties/1
+  # Showing a requested property
   def show
     #if customer has any subscriptions && if the customer's last subscription has not expired
       #render json: @property, only: [:name, :description, :address, :image]
@@ -17,7 +20,7 @@ class PropertiesController < ApplicationController
     #end
   end
 
-  # POST /properties
+  # Create a property
   def create
     #authenticate user && confirm if the user is an admin
     @property = Property.new(property_params)
@@ -31,7 +34,7 @@ class PropertiesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /properties/1
+  # Update a property
   def update
     #authenticate user && confirm if the user is an admin
     authenticate_user
@@ -42,14 +45,18 @@ class PropertiesController < ApplicationController
     end
   end
 
-  # DELETE /properties/1
+  # Delete a named property
   def destroy
-     #authenticate user && confirm if the user is an admin
+    #authenticate user && confirm if the user is an admin
     @property.destroy
   end
 
+  #search for properties
+  def search_property
+    @property = Property.find_by(params[:id])
+  end
+  
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_property
       @property = Property.find(params[:id])
     end

@@ -1,22 +1,21 @@
 class AmountsController < ApplicationController
   before_action :set_amount, only: [:show, :update, :destroy]
 
-  # GET /amounts
+  # Display the list of all amount
   def index
     @amounts = Amount.all
-
     render json: @amounts
   end
 
-  # GET /amounts/1
+  # show an amount
   def show
     render json: @amount
   end
 
-  # POST /amounts
+  # Create an amount
   def create
     @amount = Amount.new(amount_params)
-
+    @amount.user_id = User.first.id
     if @amount.save
       render json: @amount, status: :created, location: @amount
     else
@@ -24,28 +23,13 @@ class AmountsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /amounts/1
-  def update
-    if @amount.update(amount_params)
-      render json: @amount
-    else
-      render json: @amount.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /amounts/1
-  def destroy
-    @amount.destroy
-  end
-
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_amount
       @amount = Amount.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def amount_params
-      params.require(:amount).permit(:price, :user_id)
+      params.require(:amount).permit(:price)
     end
 end

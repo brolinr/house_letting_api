@@ -1,24 +1,30 @@
-# README
+# Real Estate API 
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A rails property letting API. The application handles property creation and storage, mobile payment processing with the help of the paynow ruby sdk [Paynow SDK](https://github.com/gitnyasha/paynow-ruby-sdk) and monthly subscriptions for customers.
 
-Things you may want to cover:
+## :package: Built With
 
-* Ruby version
+    - Rails
+    - RESTful API
+    - Paynow
+    - Postgresql for production
+    - SQLite for development
+    - Postman for testing
 
-* System dependencies
+## :busts_in_silhouette: Authors
 
-* Configuration
+👤 **Brolin Remunyanga**
 
-* Database creation
+- Linkedin: [Brolin Remunyanga](https://www.linkedin.com/brolinr-remunyanga/)
+- Github: [@brolinr](https://github.com/brolinr)
 
-* Database initialization
+## 🤝 Contributing
 
-* How to run the test suite
+    issue reports are welcome!
 
-* Services (job queues, cache servers, search engines, etc.)
+Feel free to check the [issues page](../../issues).
 
-* Deployment instructions
+## :star2: Show your support
 
-* ...
+    Give a ⭐️ if you like this project!
+

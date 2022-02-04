@@ -3,6 +3,7 @@
 
 class SessionsController < ApplicationController
   include CurrentUserConcern
+  
   def create
     user = User.find_by(name: params[:session][:name].downcase)
     if user && user.authenticate(params[:session][:password])

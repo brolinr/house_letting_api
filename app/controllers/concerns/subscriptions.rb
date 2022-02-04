@@ -12,8 +12,11 @@
 
 #def subscribed?
     
-#    if customer.subscriptions.any? && customer.subscriptions.expired
-        
+#    if customer.subscriptions.any? && expiry > current_date 
+        #expiry = customer.Subscription.last.created_at + 30 days 
+        #current_date = customer.Subscription.last.created_at
+
+        #then user is subscribed
 #    else
         
 #    end
