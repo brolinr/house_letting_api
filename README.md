@@ -1,8 +1,8 @@
-# Real Estate API 
+# Property Letting API
 
 A rails property letting API. The application handles property creation and storage, mobile payment processing with the help of the paynow ruby sdk [Paynow SDK](https://github.com/gitnyasha/paynow-ruby-sdk) and monthly subscriptions for customers.
 
-## :package: Built With
+## Built With
 
     - Rails
     - RESTful API
@@ -11,7 +11,7 @@ A rails property letting API. The application handles property creation and stor
     - SQLite for development
     - Postman for testing
 
-## :busts_in_silhouette: Authors
+## Authors
 
 👤 **Brolin Remunyanga**
 
@@ -24,7 +24,7 @@ A rails property letting API. The application handles property creation and stor
 
 Feel free to check the [issues page](../../issues).
 
-## :star2: Show your support
+## ⭐️ Show your support
 
     Give a ⭐️ if you like this project!
 

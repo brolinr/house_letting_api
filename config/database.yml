@@ -28,4 +28,4 @@ production:
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   database: letting_production
   username: bluffhill
-  password: <%= ENV['BLUFFHILL_PRODUCTION_PASSWORD'] %>
+  password: <%= ENV['LETTING_DATABASE_PASSWORD'] %>
