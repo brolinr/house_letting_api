@@ -4,10 +4,7 @@ class PropertiesController < ApplicationController
   # Listing all properties
   def index
     @properties = Property.all
-
-    @properties.each |p| do
-      render json: p, only: [:name, :description]
-    end
+      render json: @properties, only: [:name, :description]
   end
 
   # Showing a requested property
