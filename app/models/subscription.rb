@@ -1,4 +1,4 @@
 class Subscription < ApplicationRecord
   belongs_to :customer
-  #before_save :check_payment_success
+  validates_presence_of :poll_url, :month, :ecocash_number
 end

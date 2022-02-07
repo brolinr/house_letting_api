@@ -15,9 +15,11 @@ class SubscriptionsController < ApplicationController
     @subscription.customer_id = @customer.id
     process_paynow
     if @subscription.save
-      render json: @subscription, status: :created, location: @subscription
+      render json: "#{@customer.name} You have successifully paid your subscription.",
+             status: :created, location: @subscription
     else
-      render json: @subscription.errors, status: :unprocessable_entity
+      render json: "Sorry#{@customer.name} your subscription failed please restart the process",
+             status: :unprocessable_entity
     end
   end
 
