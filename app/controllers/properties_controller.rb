@@ -4,14 +4,14 @@ class PropertiesController < ApplicationController
   # Listing all properties
   def index
     @properties = Property.all
-      render json: @properties, only: [:name, :description]
+      render json: @properties, only: [:id, :city, :description]
   end
 
   # Showing a requested property
   def show
     #if customer has any subscriptions && if the customer's last subscription has not expired
-      #render json: @property, only: [:name, :description, :address, :image]
-      render json: @property, only: [:name, :description, :address, :contact]
+      #render json: @property, only: [:city, :description, :address, :image]
+      render json: @property, only: [:city, :description, :address, :contact]
     #else
       #index the properties
     #end
@@ -23,7 +23,7 @@ class PropertiesController < ApplicationController
     @property = Property.new(property_params)
     #@property = current_user.properties.build(property_params)
     if @property.save
-      #render json: @property.as_json(only: %i[name description address contact name]).merge(
+      #render json: @property.as_json(only: %i[city description address contact city]).merge(
        # image_path: url_for(@property.image))
       render json: @property, status: :created, location: @property, except: [:created_at, :updated_at]
     else
@@ -42,7 +42,7 @@ class PropertiesController < ApplicationController
     end
   end
 
-  # Delete a named property
+  # Delete a cityd property
   def destroy
     #authenticate user && confirm if the user is an admin
     @property.destroy
@@ -60,6 +60,6 @@ class PropertiesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def property_params
-      params.require(:property).permit(:name, :description, :address, :contact, :user_id)
+      params.require(:property).permit(:city, :description, :address, :contact, :user_id)
     end
 end

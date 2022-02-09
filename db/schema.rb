@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(version: 2022_02_04_180257) do
   end
 
   create_table "properties", force: :cascade do |t|
-    t.string "name"
+    t.string "city"
     t.string "description"
     t.string "address"
     t.datetime "created_at", precision: 6, null: false
@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(version: 2022_02_04_180257) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "poll_url"
     t.string "month"
-    t.integer "ecocash_number"
+    t.string "ecocash_number"
     t.string "phone"
     t.index ["customer_id"], name: "index_subscriptions_on_customer_id"
   end

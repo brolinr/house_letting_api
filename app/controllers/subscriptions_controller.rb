@@ -25,22 +25,28 @@ class SubscriptionsController < ApplicationController
 
   #Ecocash payment processing
   def process_paynow
-    paynow = Paynow.new(ENV["INTEGRATION_ID"], ENV["INTEGRATION_KEY"],
+    paynow = Paynow.new("13223", "825053af-5388-4789-b24a-ac6105c80a05",
                         "https://api-bluffhope.herokuapp.com/",
                         "https://api-bluffhope.herokuapp.com/")
-
     payment = paynow.create_payment("Company Subscription", 
                                     "subscription@email.com")
     amount = User.first.amounts.last
     payment.add("#{Date::MONTHNAMES[Time.now.mon]} Subscription", amount.price)
     @subscription.month = Date::MONTHNAMES[Time.now.mon]
-    response = paynow.send_mobile(payment, @subscription.ecocash_number.to_s, 'ecocash')
-
+    response = paynow.send_mobile(payment, @subscription.ecocash_number, 'ecocash')
+    # Get the poll url (used to check the status of a transaction) and save in DB.
     if response.success
-      # Get the poll url (used to check the status of a transaction). You might want to save this in your DB
       poll_url = response.poll_url
       @subscription.poll_url = poll_url
       instructions = response.instructions
+    end
+    # Check the status of the transaction with the specified poll url
+    status = PaynowStatus.check_transcation_status(poll_url)
+    if status["status"] == "Paid"
+      render page
+      print "Payment successfull"
+    else
+      print "Not Paid"
     end
   end
 
