@@ -33,8 +33,6 @@ class PropertiesController < ApplicationController
 
   # Update a property
   def update
-    #authenticate user && confirm if the user is an admin
-    authenticate_user
     if @property.update(property_params)
       render json: @property, except: [:created_at, :updated_at]
     else
@@ -46,11 +44,6 @@ class PropertiesController < ApplicationController
   def destroy
     #authenticate user && confirm if the user is an admin
     @property.destroy
-  end
-
-  #search for properties
-  def search_property
-    @property = Property.find_by(params[:id])
   end
   
   private
