@@ -1,4 +1,4 @@
 class Customer < ApplicationRecord
     has_many :subscriptions
-    validates_uniqueness_of :name, :phone
+    validates_uniqueness_of :phone
 end

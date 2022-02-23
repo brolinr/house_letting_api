@@ -55,4 +55,14 @@ class PropertiesController < ApplicationController
     def property_params
       params.require(:property).permit(:city, :description, :address, :contact, :user_id)
     end
+
+    def subscribed?(user)
+      if @customer.subscriptions.any? && subscriptions_expired?
+        render :show
+      else
+        redirect_to new_subscription_path
+      end
+    end
+    
+    
 end
