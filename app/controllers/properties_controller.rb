@@ -9,25 +9,21 @@ class PropertiesController < ApplicationController
 
   # Showing a requested property
   def show
-    #if customer has any subscriptions && if the customer's last subscription has not expired
-      #render json: @property, only: [:city, :description, :address, :image]
+    @customer = Customer.find_by(phone: params[:phone])
+    if @customer.subscriptions.any? then @customer.subscriptions.last.created_at + 30.days > Time.now
       render json: @property, only: [:city, :description, :address, :contact]
-    #else
-      #index the properties
-    #end
+    else
+      render json: "Please send 'Subscribe' to subscribe."
+    end
   end
 
   # Create a property
   def create
-    #authenticate user && confirm if the user is an admin
     @property = Property.new(property_params)
-    #@property = current_user.properties.build(property_params)
     if @property.save
-      #render json: @property.as_json(only: %i[city description address contact city]).merge(
-       # image_path: url_for(@property.image))
       render json: @property, status: :created, location: @property, except: [:created_at, :updated_at]
     else
-      render json: @property.errors, status: :unprocessable_entity
+      render json: "Sorry I cannot process your entry please send again"
     end
   end
 
@@ -40,9 +36,7 @@ class PropertiesController < ApplicationController
     end
   end
 
-  # Delete a cityd property
   def destroy
-    #authenticate user && confirm if the user is an admin
     @property.destroy
   end
   
@@ -55,14 +49,4 @@ class PropertiesController < ApplicationController
     def property_params
       params.require(:property).permit(:city, :description, :address, :contact, :user_id)
     end
-
-    def subscribed?(user)
-      if @customer.subscriptions.any? && subscriptions_expired?
-        render :show
-      else
-        redirect_to new_subscription_path
-      end
-    end
-    
-    
 end

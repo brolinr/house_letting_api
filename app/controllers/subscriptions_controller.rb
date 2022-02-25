@@ -12,19 +12,19 @@ class SubscriptionsController < ApplicationController
   def create
     @subscription = Subscription.new(subscription_params)
     @customer = Customer.find_by(phone: @subscription.phone)
-    last_paid_subscription = @customer.subscriptions.last
 
-    if @customer.subscriptions.empty? || last_paid_subscription.created_at + 30.days
+    if !@customer.subscriptions.any? || @customer.subscriptions.last.created_at + 30.days < Time.now
       @subscription.customer_id = @customer.id
       process_paynow
-  
+      check_status
       if @subscription.save
-        render json: "#{@customer.name} #{@instructions}", status: :created, location: @subscription
+        render json: "#{@customer.name} Enter your EcoCash PIN to authorize your ecocash payment", status: :created, location: @subscription
       else
         render json: "Sorry#{@customer.name} your subscription failed please resend our mobile number",
               status: :unprocessable_entity
       end
     else
+      sub_end_date = @customer.subscriptions.last.created_at + 30.days
       render json: "Your subscription is expiring on #{sub_end_date.to_formatted_s(:long)}."
     end
   end
@@ -49,7 +49,8 @@ class SubscriptionsController < ApplicationController
     if response.success
       poll_url = response.poll_url
       @subscription.poll_url = poll_url
-      @instructions = response["instruction"]
+      @instructions = response.split(/@instruction=/)
+      @instructions[1]
     end
   end
 
