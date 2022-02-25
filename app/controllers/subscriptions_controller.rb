@@ -16,11 +16,10 @@ class SubscriptionsController < ApplicationController
     if !@customer.subscriptions.any? || @customer.subscriptions.last.created_at + 30.days < Time.now
       @subscription.customer_id = @customer.id
       process_paynow
-      check_status
       if @subscription.save
-        render json: "#{@customer.name} Enter your EcoCash PIN to authorize your ecocash payment", status: :created, location: @subscription
+        render json: "Enter your EcoCash PIN to authorize your ecocash payment", status: :created, location: @subscription
       else
-        render json: "Sorry#{@customer.name} your subscription failed please resend our mobile number",
+        render json: "Sorry#{@customer.name} your subscription failed please resend your mobile number",
               status: :unprocessable_entity
       end
     else
@@ -49,22 +48,8 @@ class SubscriptionsController < ApplicationController
     if response.success
       poll_url = response.poll_url
       @subscription.poll_url = poll_url
-      @instructions = response.split(/@instruction=/)
-      @instructions[1]
     end
   end
-
-  def check_status
-    # Check the status of the transaction with the specified poll url
-    status = PaynowStatus.check_transaction_status(@subscription.poll_url)
-    if status["status"] == "Paid"
-      "Payment successfull"
-    else
-      "Not Paid"
-    end
-  end
-  
-
 
   private
     def set_subscription
