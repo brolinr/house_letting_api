@@ -10,7 +10,7 @@ class PropertiesController < ApplicationController
   # Showing a requested property
   def show
     @customer = Customer.find_by(phone: params[:phone])
-    if @customer.subscriptions.any? || @customer.subscriptions.last.created_at + 30.days > Time.now
+    if @customer.subscriptions.last.created_at + 30.days > Time.now
       render json: @property, only: [:city, :description, :address, :contact]
     else
       render json: "Please send 'Subscribe' to subscribe."
