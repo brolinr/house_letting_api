@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_24_145723) do
+ActiveRecord::Schema.define(version: 2022_03_17_145342) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -55,10 +55,16 @@ ActiveRecord::Schema.define(version: 2022_02_24_145723) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "feedbacks", force: :cascade do |t|
+    t.text "description"
+    t.integer "customer_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["customer_id"], name: "index_feedbacks_on_customer_id"
+  end
+
   create_table "properties", force: :cascade do |t|
-    t.string "city"
     t.string "description"
-    t.string "address"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "contact"
@@ -89,6 +95,7 @@ ActiveRecord::Schema.define(version: 2022_02_24_145723) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "amounts", "users"
+  add_foreign_key "feedbacks", "customers"
   add_foreign_key "properties", "users"
   add_foreign_key "subscriptions", "customers"
 end

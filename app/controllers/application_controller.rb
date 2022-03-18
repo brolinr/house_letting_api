@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::API
     def home
-        render json: "you are not subscribed"
+        render json: "You are not authorized to access this location"
     end
     
 end

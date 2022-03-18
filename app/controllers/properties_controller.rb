@@ -4,21 +4,23 @@ class PropertiesController < ApplicationController
   # Listing all properties
   def index
     @properties = Property.all
-    render json: @properties, only: [:id, :city, :description]
+    render json: @properties, only: [:id, :description]
   end
 
   # Showing a requested property
   def show
     @customer = Customer.find_by(phone: params[:phone])
     if @customer.subscriptions.last.created_at + 30.days > Time.now
-      render json: @property, only: [:city, :description, :address, :contact]
+      render json: @property, only: [:description, :contact]
     end
   end
 
   # Create a property
   def create
+    @number = params[:phone]
     @property = Property.new(property_params)
-    if @property.save
+
+    if @number == User.first.phone && @property.save
       render json: @property, status: :created, location: @property, except: [:created_at, :updated_at]
     else
       render json: "Sorry I cannot process your entry please send again"
@@ -45,6 +47,6 @@ class PropertiesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def property_params
-      params.require(:property).permit(:city, :description, :address, :contact, :user_id)
+      params.require(:property).permit(:description, :contact, :user_id)
     end
 end
