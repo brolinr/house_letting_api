@@ -13,7 +13,7 @@ class SubscriptionsController < ApplicationController
     if !@customer.subscriptions.any? || @customer.subscriptions.last.created_at + 30.days < Time.now
       @subscription.customer_id = @customer.id
       process_payment
-      sleep 12
+      sleep 16
       
       @poll_url = PaynowStatus.check_transaction_status(@subscription.poll_url)
       if @poll_url["status"] == "Paid" && @subscription.save
@@ -31,8 +31,8 @@ class SubscriptionsController < ApplicationController
   def process_payment
     amount = User.first.amounts.last
     @subscription.month = Date::MONTHNAMES[Time.now.mon]
-    paynow = Paynow.new("13262", "490f62fb-a107-49fa-8a8d-691e741a06d9",
-                        "http://localhost:3000/", "http://localhost:3000/")
+    paynow = Paynow.new(INTEGRATION_ID, INTEGRATION_KEY,
+                        "https://api-bluffhope.herokuapp.com/", "https://api-bluffhope.herokuapp.com/")
     payment = paynow.create_payment("Company Subscription", "rutendomazwi@gmail.com")
     payment.add("#{Date::MONTHNAMES[Time.now.mon]} Subscription", amount.price)
     response = paynow.send_mobile(payment, @subscription.ecocash_number, 'ecocash')
