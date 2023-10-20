@@ -1,5 +1,7 @@
-class FeedbacksController < ApplicationController
-  before_action :set_feedback, only: [:show, :destroy]
+# frozen_string_literal: true
+
+class V1::FeedbacksController < ApplicationController
+  before_action :set_feedback, only: %i[show destroy]
 
   # GET /feedbacks
   def index
@@ -25,15 +27,15 @@ class FeedbacksController < ApplicationController
     end
   end
 
-
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_feedback
-      @feedback = Feedback.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def feedback_params
-      params.require(:feedback).permit(:description)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_feedback
+    @feedback = Feedback.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def feedback_params
+    params.require(:feedback).permit(:description)
+  end
 end

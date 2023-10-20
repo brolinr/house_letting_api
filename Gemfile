@@ -1,34 +1,41 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.2'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
-gem 'rails', '~> 6.1.4', '>= 6.1.4.4'
-# Use Puma as the app server
-gem 'puma', '~> 5.0'
-# Use Active Storage variant
-gem 'image_processing', '~> 1.2'
-# Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '>= 1.4.4', require: false
-# Paynow payment processing gem
-gem 'paynow_sdk'
+gem 'bootsnap',                           '>= 1.4.4', require: false
+gem 'image_processing',                   '~> 1.2'
+gem 'paynow_sdk',                         '~> 1.1.0'
+gem 'pg',                                 '~> 1.1'
+gem 'puma',                               '~> 5.0'
+gem 'rack-cors',                          '~> 2.0'
+gem 'rails',                              '~> 6.1.4', '>= 6.1.4.4'
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  # Use sqlite3 as the database for Active Record
-  gem 'sqlite3', '~> 1.4'
-end
-
-group :production do
-  #Use Postgres as the database
-  gem 'pg'
-  #gem 'aws-sdk-s3', '1.46.0', require: false
+  gem 'byebug',                             '~> 11.1'
+  gem 'debug',                              '~> 1.8'
+  gem 'factory_bot_rails',                  '~> 6.2.0'
+  gem 'ffaker',                             '~> 2.20.0'
+  gem 'foreman',                            '~> 0.87.2'
+  gem 'rubocop',                            '~> 1.35.0'
+  gem 'rubocop-performance',                '~> 1.14.3'
+  gem 'rubocop-rails',                      '~> 2.14.2'
+  gem 'rubocop-rspec',                      '~> 2.8'
+  gem 'shoulda-matchers',                   '~> 5.3'
 end
 
 group :development do
-  gem 'listen', '~> 3.3'
-  # Spring speeds up development by keeping your application running in the background.
-  gem 'spring'
+  gem 'web-console',                        '~> 4.2'
 end
+
+group :test do
+  gem 'capybara',                           '~> 3.39.2'
+  gem 'rspec-rails',                        '~> 6.0.1'
+  gem 'selenium-webdriver',                 '~> 4.10.0'
+  gem 'vcr',                                '~> 6.1.0'
+  gem 'webdrivers',                         '~> 5.2.0'
+end
+
+gem "listen", "~> 3.8"

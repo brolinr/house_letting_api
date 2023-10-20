@@ -1,5 +1,7 @@
-class AmountsController < ApplicationController
-  before_action :set_amount, only: [:show, :update, :destroy]
+# frozen_string_literal: true
+
+class V1::AmountsController < ApplicationController
+  before_action :set_amount, only: %i[show update destroy]
 
   # Display the list of all amount
   def index
@@ -24,12 +26,13 @@ class AmountsController < ApplicationController
   end
 
   private
-    def set_amount
-      @amount = Amount.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def amount_params
-      params.require(:amount).permit(:price)
-    end
+  def set_amount
+    @amount = Amount.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def amount_params
+    params.require(:amount).permit(:price)
+  end
 end

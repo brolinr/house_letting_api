@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 class Property < ApplicationRecord
-    #has_one_attached :image
-    validates_presence_of :description, :contact
-    belongs_to :user
+  belongs_to :admin
+
+  validates :description, :contact, presence: true
+  validates :location, presence: true
 end
