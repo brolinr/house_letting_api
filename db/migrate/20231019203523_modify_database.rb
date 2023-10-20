@@ -19,5 +19,6 @@ class ModifyDatabase < ActiveRecord::Migration[6.1]
 
     add_column :subscriptions, :payment_status, :integer, default: 0
     add_column :subscriptions, :fee, :integer, default: 0
+    add_column :properties, :location, :string
   end
 end

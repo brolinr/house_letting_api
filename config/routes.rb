@@ -10,12 +10,16 @@ Rails.application.routes.draw do
     end
 
     namespace :v2 do
-      resources :customers, only: [:create, :update, :destroy]
-      resources :admins, only: [:create, :update, :destroy]
-      resources :subscriptions, only: :create
+      resources :customers, only: [:create, :update, :destroy], param: :phone, shallow: true do
+        resources :subscriptions, only: :create
+      end
+
+      resources :admins, only: [:create, :update, :destroy], param: :phone
+
       resources :houses, only: [:create, :update, :destroy, :index, :show]
       resources :amounts, only: [:create, :index]
       resources :feedbacks, only: [:create, :index, :show]
+
     end
   end
 end

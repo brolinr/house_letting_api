@@ -24,6 +24,6 @@ class V2::SubscriptionsController < ApplicationController
   end
 
   def customer
-    @customer ||= Customer.find_by(phone: params[:phone])
+    @customer ||= Customer.find_by(phone: params[:customer_phone])
   end
 end
