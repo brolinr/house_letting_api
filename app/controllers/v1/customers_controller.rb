@@ -1,4 +1,6 @@
-class CustomersController < ApplicationController
+# frozen_string_literal: true
+
+class V1::CustomersController < ApplicationController
   # Create customers
   def create
     @customer = Customer.new(customer_params)
@@ -12,8 +14,8 @@ class CustomersController < ApplicationController
 
   private
 
-    # Only allow a list of trusted parameters through.
-    def customer_params
-      params.require(:customer).permit(:name, :phone)
-    end
+  # Only allow a list of trusted parameters through.
+  def customer_params
+    params.require(:customer).permit(:name, :phone)
+  end
 end
