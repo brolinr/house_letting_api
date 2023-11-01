@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_19_203523) do
+ActiveRecord::Schema.define(version: 2023_10_24_065439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,14 +28,18 @@ ActiveRecord::Schema.define(version: 2023_10_19_203523) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id", null: false
+    t.integer "feedback_type", default: 0
   end
 
   create_table "properties", force: :cascade do |t|
     t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "contact"
     t.bigint "user_id", null: false
+    t.string "location"
+    t.string "owner_phone"
+    t.string "owner_whatsapp"
+    t.string "owner_email"
     t.index ["user_id"], name: "index_properties_on_user_id"
   end
 

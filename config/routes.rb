@@ -14,12 +14,12 @@ Rails.application.routes.draw do
         resources :subscriptions, only: :create
       end
 
-      resources :admins, only: [:create, :update, :destroy], param: :phone
+      resources :admins, only: [:create, :update, :destroy], param: :phone, shallow: true do
+        resources :amounts, only: [:create, :index]
+      end
 
       resources :houses, only: [:create, :update, :destroy, :index, :show]
-      resources :amounts, only: [:create, :index]
       resources :feedbacks, only: [:create, :index, :show]
-
     end
   end
 end

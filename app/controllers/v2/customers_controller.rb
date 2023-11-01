@@ -1,28 +1,32 @@
+# frozen_string_literal: true
+
 class V2::CustomersController < ApplicationController
   def create
-    begin
-      @customer = Customer.new(permitted_params)
+    @customer = Customer.new(permitted_params)
 
-      if @customer.save
-        render json: @customer, status: :created
-      else
-        render_unprocessable(@customer)
-      end
-    rescue StandardError => e
-      render_internal_error(e)
+    if @customer.save
+      render json: @customer, status: :created
+    else
+      render_unprocessable(@customer)
     end
+  rescue StandardError => e
+    return if response.body.include?('error')
+
+    render_internal_error(e)
   end
 
   def update
-    render_not_found unless admin.instance_of?(Customer)
+    render_not_found unless customer.instance_of?(Customer)
 
     begin
-      if admin.update(permitted_params)
-        render json: admin.reload, status: :ok
+      if customer.update(permitted_params)
+        render json: customer.reload, status: :ok
       else
-        render_unprocessable(admin)
+        render_unprocessable(customer)
       end
     rescue StandardError => e
+      return if response.body.include?('error')
+
       render_internal_error(e)
     end
   end
@@ -37,6 +41,8 @@ class V2::CustomersController < ApplicationController
         render_unprocessable(customer)
       end
     rescue StandardError => e
+      return if response.body.include?('error')
+
       render_internal_error(e)
     end
   end
@@ -48,6 +54,6 @@ class V2::CustomersController < ApplicationController
   end
 
   def customer
-    @customer ||= Customer.find_by(phone: permitted_params[:phone])
+    @customer ||= Customer.find_by(phone: params[:phone])
   end
 end

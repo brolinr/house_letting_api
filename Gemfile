@@ -38,4 +38,4 @@ group :test do
   gem 'webdrivers',                         '~> 5.2.0'
 end
 
-gem "listen", "~> 3.8"
+gem 'listen', '~> 3.8'

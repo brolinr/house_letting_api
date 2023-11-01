@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
 class V2::AdminsController < ApplicationController
+  before_action :admin, except: :create
+
   def create
     @admin = Admin.new(permitted_params)
 
@@ -8,6 +12,8 @@ class V2::AdminsController < ApplicationController
       render_unprocessable(@admin)
     end
   rescue StandardError => e
+    return if response.body.include?('error')
+
     render_internal_error(e)
   end
 
@@ -21,6 +27,8 @@ class V2::AdminsController < ApplicationController
         render_unprocessable(admin)
       end
     rescue StandardError => e
+      return if response.body.include?('error')
+
       render_internal_error(e)
     end
   end
@@ -35,7 +43,9 @@ class V2::AdminsController < ApplicationController
         render_unprocessable(admin)
       end
     rescue StandardError => e
-      render_internal_error(e)
+      return if response.body.include?('error')
+
+      render_internal_error(e.join(','))
     end
   end
 
@@ -46,6 +56,6 @@ class V2::AdminsController < ApplicationController
   end
 
   def admin
-    @admin ||= Admin.find_by(phone: permitted_params[:phone])
+    @admin ||= Admin.find_by(phone: params[:phone])
   end
 end
