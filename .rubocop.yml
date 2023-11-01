@@ -17,6 +17,7 @@ AllCops:
     - 'vendor/**/*'
     - lib/application_config_validator.rb
     - app/models/config.rb
+    - app/controllers/v1/*
 
 Lint/AmbiguousBlockAssociation:
   Exclude:
@@ -96,3 +97,6 @@ RSpec/MultipleExpectations:
 
 RSpec/MessageSpies:
   EnforcedStyle: receive
+
+Rails/InverseOf:
+  Enabled: false

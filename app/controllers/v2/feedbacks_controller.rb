@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class V2::FeedbacksController < ApplicationController
   def create
     @feedback = customer.feedbacks.build(permitted_params)
@@ -31,6 +33,7 @@ class V2::FeedbacksController < ApplicationController
   end
 
   private
+
   def permitted_params
     params.require(:feedback).permit(:description, :reporter)
   end

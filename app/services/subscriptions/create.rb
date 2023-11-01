@@ -28,13 +28,13 @@ class Subscriptions::Create < ApplicationService
     subscription.fee = subscription_fee
 
     paynow = Paynow.new(
-      ENV['PAYNOW_INTEGRATION_ID'],
-      ENV['PAYNOW_INTEGRATION_KEY'],
-      ENV['PAYMENT_RETURN_URL'],
-      ENV['PAYMENT_RESULT_URL']
+      ENV.fetch('PAYNOW_INTEGRATION_ID', nil),
+      ENV.fetch('PAYNOW_INTEGRATION_KEY', nil),
+      ENV.fetch('PAYMENT_RETURN_URL', nil),
+      ENV.fetch('PAYMENT_RESULT_URL', nil)
     )
 
-    payment = paynow.create_payment('Subscription fee', ENV['PAYNOW_AUTH_EMAIL'])
+    payment = paynow.create_payment('Subscription fee', ENV.fetch('PAYNOW_AUTH_EMAIL', nil))
     payment.add("#{subscription_month} subscription", subscription_fee)
 
     payment_response = paynow.send_mobile(payment, permitted_params[:ecocash_number], 'ecocash')
@@ -70,12 +70,12 @@ class Subscriptions::Create < ApplicationService
       @result = 'Your payment was cancelled. Restart the subscription process.'
     when 'Disputed'
       subscription.payment_status = :pending
-      @result = 'Transaction has been disputed and funds are being held in suspense until the dispute has been resolved.'
+      @result = 'Transaction has been disputed and funds are being held in suspense until
+                 the dispute has been resolved.'
     when 'Refunded'
       subscription.payment_status = :refunded
       @result = 'You were refunded.'
     end
     subscription.save
   end
-
 end
